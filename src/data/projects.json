@@ -1,34 +1,41 @@
 {
   "projects": [
     {
-      "name": { "en": "Attention Sink Atlas", "zh": "注意力汇聚点图谱" },
-      "status": "active",
-      "period": "2026 –",
-      "description": {
-        "en": "Cataloguing where and why attention sinks form across model families, and what breaks when you remove them.",
-        "zh": "系统梳理不同模型家族中注意力汇聚点出现的位置与成因，以及移除它们之后会坏掉什么。"
+      "name": {
+        "en": "Reinforcement Learning with Verifiable Rewards and Post-Training",
+        "zh": "基于可验证奖励的强化学习与后训练"
       },
-      "links": [
-        { "label": "code", "url": "https://github.com/CHANGEME/atlas" }
-      ]
-    },
-    {
-      "name": { "en": "Long-Horizon Agent Evals", "zh": "长程智能体评测" },
       "status": "active",
-      "period": "2025 –",
+      "period": "2026 – Present",
       "description": {
-        "en": "A harness for evaluating agents on tasks that take hundreds of steps, where per-step accuracy stops being a useful signal.",
-        "zh": "面向数百步长任务的智能体评测框架——在这种尺度上，逐步准确率已经不再是有意义的指标。"
+        "en": "Explore how constructing verifiable rewards and encouraging models to sample and explore over a broader space can enhance reinforcement learning, thereby improving its effectiveness and applicability in post-training.",
+        "zh": "探索构造可验证的奖励并鼓励模型在更大范围中进行采样和探索对强化学习的增益效果，进一步提高强化学习方法在后训练中的可用性。"
       },
       "links": []
     },
     {
-      "name": { "en": "KV Cache Compression", "zh": "KV 缓存压缩" },
-      "status": "paused",
-      "period": "2025",
+      "name": {
+        "en": "Scholarly: A Self-Evolving, End-to-End Research Engine",
+        "zh": "Scholarly 自进化全流程科研引擎"
+      },
+      "status": "active",
+      "period": "2026 – Present",
       "description": {
-        "en": "Exploring what is actually recoverable after aggressive KV cache eviction. Shelved pending better probes.",
-        "zh": "研究激进的 KV 缓存淘汰之后究竟还能恢复出什么。因缺乏更好的探针方法暂时搁置。"
+        "en": "An entrepreneurial project focused on building fully automated research environments, developing and deploying research agents, and exploring how they can drive the training of next-generation foundation models for scientific research.",
+        "zh": "创业项目，主要探索全自动化的科研环境以及科研Agent的开发和落地，以及如何驱动下一代的科研基础模型的训练。"
+      },
+      "links": []
+    },
+    {
+      "name": {
+        "en": "Interpretability and Editability of Large Language Model Weight Spaces",
+        "zh": "大语言模型权重空间的可解释性与可编辑性"
+      },
+      "status": "active",
+      "period": "2024 - Present",
+      "description": {
+        "en": "This research focuses on editing knowledge and experience encoded in large language model weights, as well as weight-space-based meta-learning. It explores how a deeper understanding of neural network weight spaces can guide the continual updating of model knowledge and behavior.",
+        "zh": "主要聚焦于大语言模型的知识/经验性权重编辑，以及基于权重空间的元学习。探索如何通过对深度学习模型权重空间的理解来指导模型知识以及行为的持续性更新。"
       },
       "links": []
     }
