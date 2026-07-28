@@ -1,12 +1,9 @@
 ---
-title: 关于长上下文评测的一点想法
-slug: test
-date: 2026-07-27
-updated: ''
-summary: 大海捞针（needle-in-a-haystack）这类评测已经饱和了，但它测的其实是检索，不是推理。
-tags:
-  - 评测
-  - 长上下文
+title: PPO算法详细推导
+slug: ppo
+date: 2026-07-28
+updated: 2026-07-28
+summary: ''
 draft: false
 ---
 
