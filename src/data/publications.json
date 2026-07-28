@@ -1,38 +1,67 @@
 {
   "publications": [
     {
-      "title": "A Representative Paper Title About Interpretability",
-      "authors": "Bowen Tian, Co Author, Senior Author",
-      "venue": "NeurIPS",
+      "title": "AnyEdit++: Adaptive Long-Form Knowledge Editing via Bayesian Surprise",
+      "authors": "Bowen Tian, Caixue He, Jiemin Wu, Jingying Wang, Wenshuo Chen, Zexi Li, Yutao Yue",
+      "venue": "ICML",
       "year": 2026,
       "featured": true,
-      "note": "Spotlight",
+      "note": "CCF-A",
       "links": [
-        { "label": "arXiv", "url": "https://arxiv.org/abs/0000.00000" },
-        { "label": "pdf", "url": "https://arxiv.org/pdf/0000.00000" },
-        { "label": "code", "url": "https://github.com/CHANGEME/paper" }
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2606.01053"
+        },
+        {
+          "label": "code",
+          "url": "https://github.com/TianSuya/Bayes-Chunk"
+        }
       ]
     },
     {
-      "title": "Another Paper, This One About Long Context",
-      "authors": "Co Author, Bowen Tian, Senior Author",
-      "venue": "ICLR",
-      "year": 2026,
-      "featured": true,
-      "note": "",
-      "links": [
-        { "label": "arXiv", "url": "https://arxiv.org/abs/0000.00001" }
-      ]
-    },
-    {
-      "title": "An Earlier Workshop Paper",
-      "authors": "Bowen Tian, Senior Author",
-      "venue": "ICML Workshop on Something",
+      "title": "Text2Weight: Bridging Natural Language and Neural Network Weight Spaces",
+      "authors": "Bowen Tian, Wenshuo Chen, Zexi Li, Songning Lai, Jiemin Wu, Yutao Yue",
+      "venue": "ACM MM",
       "year": 2025,
-      "featured": false,
+      "featured": true,
+      "note": "CCF-A",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2508.13633"
+        },
+        {
+          "label": "code",
+          "url": "https://github.com/TianSuya/T2W"
+        }
+      ]
+    },
+    {
+      "title": "Beyond Task Vectors: Selective Task Arithmetic Based on Importance Metrics",
+      "authors": "Bowen Tian, Songning Lai, Jiemin Wu, Zhihao Shuai, Shiming Ge, Yutao Yue",
+      "venue": "arXiv",
+      "year": 2024,
+      "featured": true,
       "note": "",
       "links": [
-        { "label": "pdf", "url": "https://example.com/paper.pdf" }
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2411.16139"
+        }
+      ]
+    },
+    {
+      "title": "PEPL: Precision-Enhanced Pseudo-Labeling for Fine-Grained Image Classification in Semi-Supervised Learning",
+      "authors": "Bowen Tian, Songning Lai, Lujundong Li, Zhihao Shuai, Runwei Guan, Tian Wu, Yutao Yue",
+      "venue": "IEEE ICASSP",
+      "year": 2025,
+      "featured": true,
+      "note": "CCF-B",
+      "links": [
+        {
+          "label": "arXiv",
+          "url": "https://arxiv.org/abs/2409.03192"
+        }
       ]
     }
   ]
