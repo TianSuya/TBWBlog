@@ -1,0 +1,67 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  # Lets you redeploy without an empty commit, e.g. after rotating a secret.
+  workflow_dispatch:
+
+# A second push while the first is deploying should win, not queue up behind it.
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.15.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build site and search index
+        env:
+          # Set these two as repository variables (Settings → Secrets and
+          # variables → Actions → Variables). Without them the tracking script
+          # is simply omitted and the site still builds.
+          PUBLIC_UMAMI_SRC: ${{ vars.PUBLIC_UMAMI_SRC }}
+          PUBLIC_UMAMI_ID: ${{ vars.PUBLIC_UMAMI_ID }}
+        run: pnpm build
+
+      - name: Check Web 1.0 constraints
+        run: ./scripts/check-retro.sh
+
+      - name: Configure SSH
+        run: |
+          install -d -m 700 ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # Pinning the host key stops this job from trusting whatever answers
+          # on port 22 — generate it once with:
+          #   ssh-keyscan -H your.server.ip
+          echo "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        env:
+          TARGET: ${{ secrets.DEPLOY_TARGET }} # e.g. deploy@203.0.113.10:/var/www/blog/
+        run: |
+          rsync -az --delete \
+            --exclude='.well-known/' \
+            -e "ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
+            dist/ "$TARGET"
+
+      # The hit counter is written by the server, not by this job, and lives in
+      # /var/www/counter/ — outside the rsync target above. If you ever move it
+      # under /var/www/blog/, `--delete` will remove it on every deploy.

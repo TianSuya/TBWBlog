@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts } from '../../lib/posts';
+import {
+  useTranslations,
+  punct,
+  localizePath,
+  languages,
+  formatDate,
+  type Lang,
+} from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// The human-readable site map lists every page in both languages, because the
+// whole point of a 90s site map is that nothing is hidden from you. Posts have
+// no language of their own, so they are listed once and linked inside whichever
+// shell you are currently reading.
+const posts = await getPosts();
+
+const pages = [
+  { href: '/', label: t('nav.home') },
+  { href: '/blog', label: t('nav.blog') },
+  { href: '/publications', label: t('nav.publications') },
+  { href: '/archive', label: t('nav.archive') },
+  { href: '/search', label: t('nav.search') },
+  { href: '/sitemap', label: t('nav.sitemap') },
+];
+---
+
+<Base lang={lang} title={t('sitemap.title')}>
+  <h1>{t('sitemap.title')}</h1>
+  <p class="muted">{t('sitemap.blurb')}</p>
+
+  <h2 class="section-head">{t('sitemap.pages')}</h2>
+  <ul>
+    {
+      pages.map((page) => (
+        <li>
+          {page.label}
+          {' — '}
+          <span class="brackets">
+            {(Object.keys(languages) as Lang[]).map((code) => (
+              <a href={localizePath(page.href, code)} hreflang={code}>
+                {languages[code]}
+              </a>
+            ))}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="section-head">{t('sitemap.posts')}</h2>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <a href={localizePath(`/blog/${post.id}`, lang)}>{post.data.title}</a>{' '}
+          <span class="entry-meta">
+            {punct[lang].lparen}{formatDate(post.data.date, lang)}{punct[lang].rparen}
+          </span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="section-head">{t('sitemap.feeds')}</h2>
+  <ul>
+    <li><a href="/rss.xml">/rss.xml</a></li>
+    <li><a href="/sitemap-index.xml">/sitemap-index.xml</a></li>
+    <li><a href="/api/counter.json">/api/counter.json</a></li>
+  </ul>
+</Base>

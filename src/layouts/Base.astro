@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Footer from '../components/Footer.astro';
+import profile from '../data/profile.json';
+import { pick, alternatePath, languages, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description?: string;
+  /**
+   * The home page carries the masthead (name, title, affiliation) and uses the
+   * name as its <h1>. Every other page drops it and leads with its own
+   * heading — the sidebar's Home link is how you get back.
+   */
+  home?: boolean;
+}
+
+const { lang, title, description, home = false } = Astro.props;
+const url = Astro.url;
+
+const siteName = pick(profile.name, lang);
+const pageTitle = home ? `${siteName} — ${pick(profile.title, lang)}` : `${title} — ${siteName}`;
+const desc = description ?? pick(profile.bio, lang).split('\n')[0];
+
+const canonical = new URL(url.pathname, Astro.site ?? 'https://example.com');
+
+// Analytics is opt-in via env vars so the repo never carries a site ID, and so
+// `pnpm dev` is never counted. Set these in the GitHub Actions build step.
+const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
+const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
+const trackingOn = import.meta.env.PROD && umamiSrc && umamiId;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical.href} />
+
+    {
+      (Object.keys(languages) as Lang[]).map((code) => (
+        <link
+          rel="alternate"
+          hreflang={code === 'zh' ? 'zh-CN' : 'en'}
+          href={new URL(alternatePath(url, code), Astro.site ?? 'https://example.com').href}
+        />
+      ))
+    }
+
+    <link rel="alternate" type="application/rss+xml" title={siteName} href="/rss.xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical.href} />
+
+    {/* Runs before first paint so the dark theme never flashes white. */}
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark = saved
+            ? saved === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {
+          /* no localStorage: fall back to the light default */
+        }
+      })();
+    </script>
+
+    {trackingOn && <script is:inline defer src={umamiSrc} data-website-id={umamiId} />}
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {/*
+      Two columns on wide screens: content on the left at a 74-character
+      measure, navigation on the right. DOM order is masthead → sidebar → main
+      so the single-column mobile stack puts the nav above the content.
+    */}
+    <div class:list={['page', { 'page--home': home }]}>
+      {
+        home && (
+          <div data-pagefind-ignore class="masthead-slot">
+            <Header lang={lang} />
+            <hr />
+          </div>
+        )
+      }
+
+      <Sidebar lang={lang} url={url} />
+
+      <main id="main">
+        <slot />
+      </main>
+    </div>
+
+    <div data-pagefind-ignore>
+      <Footer lang={lang} />
+    </div>
+  </body>
+</html>

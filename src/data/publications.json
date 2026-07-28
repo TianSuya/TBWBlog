@@ -1,0 +1,39 @@
+{
+  "publications": [
+    {
+      "title": "A Representative Paper Title About Interpretability",
+      "authors": "Bowen Tian, Co Author, Senior Author",
+      "venue": "NeurIPS",
+      "year": 2026,
+      "featured": true,
+      "note": "Spotlight",
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/0000.00000" },
+        { "label": "pdf", "url": "https://arxiv.org/pdf/0000.00000" },
+        { "label": "code", "url": "https://github.com/CHANGEME/paper" }
+      ]
+    },
+    {
+      "title": "Another Paper, This One About Long Context",
+      "authors": "Co Author, Bowen Tian, Senior Author",
+      "venue": "ICLR",
+      "year": 2026,
+      "featured": true,
+      "note": "",
+      "links": [
+        { "label": "arXiv", "url": "https://arxiv.org/abs/0000.00001" }
+      ]
+    },
+    {
+      "title": "An Earlier Workshop Paper",
+      "authors": "Bowen Tian, Senior Author",
+      "venue": "ICML Workshop on Something",
+      "year": 2025,
+      "featured": false,
+      "note": "",
+      "links": [
+        { "label": "pdf", "url": "https://example.com/paper.pdf" }
+      ]
+    }
+  ]
+}

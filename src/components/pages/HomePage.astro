@@ -1,0 +1,57 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectList from '../ProjectList.astro';
+import PublicationList from '../PublicationList.astro';
+import PostList from '../PostList.astro';
+import profile from '../../data/profile.json';
+import { getPosts } from '../../lib/posts';
+import { useTranslations, pick, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const bioParagraphs = pick(profile.bio, lang).split('\n').filter(Boolean);
+const recent = (await getPosts()).slice(0, 5);
+---
+
+<Base lang={lang} title={pick(profile.name, lang)} home>
+  <div class="profile">
+    <img
+      class="avatar"
+      src={profile.avatar}
+      width="140"
+      height="140"
+      alt={pick(profile.name, lang)}
+    />
+    <div class="bio">
+      {bioParagraphs.map((para) => <p>{para}</p>)}
+      <p class="brackets">
+        {profile.links.map((l) => <a href={l.url} rel="me noopener">{l.label}</a>)}
+      </p>
+    </div>
+  </div>
+
+  <h2 class="section-head">{t('home.interests')}</h2>
+  <ul>
+    {profile.interests.map((item) => <li>{pick(item, lang)}</li>)}
+  </ul>
+
+  <h2 class="section-head">{t('home.projects')}</h2>
+  <ProjectList lang={lang} />
+
+  <h2 class="section-head">{t('home.publications')}</h2>
+  <PublicationList lang={lang} featuredOnly />
+  <p class="brackets">
+    <a href={localizePath('/publications', lang)}>{t('home.allPublications')}</a>
+  </p>
+
+  <h2 class="section-head">{t('home.posts')}</h2>
+  <PostList lang={lang} posts={recent} compact />
+  <p class="brackets">
+    <a href={localizePath('/blog', lang)}>{t('home.allPosts')}</a>
+  </p>
+</Base>

@@ -1,0 +1,24 @@
+---
+import profile from '../data/profile.json';
+import { punct, pick, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const name = pick(profile.name, lang);
+const subtitle = [pick(profile.title, lang), pick(profile.affiliation, lang)]
+  .filter(Boolean)
+  .join(punct[lang].comma);
+---
+
+{/*
+  Navigation lives in Sidebar.astro; this is just the letterhead, and Base only
+  renders it on the home page.
+*/}
+<header class="masthead">
+  <h1>{name}</h1>
+  <p class="subtitle">{subtitle}</p>
+</header>

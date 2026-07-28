@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.astro/
+
+# Server secrets — Umami passwords and the counter account live here.
+deploy/.env
+
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# 部署打包产物
+*.zip
+
+# 头像原图（3.7MB）。部署用不到它——public/images/avatar.jpg 才是站点实际
+# 加载的那张，由 `pnpm avatar` 从原图生成。原图属于素材，进了 Git 历史就
+# 再也清不掉体积，所以留在本地。想连原图一起版本管理就删掉这一行。
+assets/originals/

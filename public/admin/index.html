@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Content Manager</title>
+  </head>
+  <body>
+    <!--
+      Sveltia CMS is a self-contained SPA: it bundles its own styles and talks
+      to the GitHub API straight from the browser. Nothing runs on the server.
+
+      Two documented gotchas, both deliberate:
+        1. No stylesheet link — all CSS is inside the bundle.
+        2. No type="module" — the bundle is not distributed as an ES module and
+           the attribute causes undefined behaviour.
+    -->
+    <script src="https://unpkg.com/@sveltia/cms@^0.173.0/dist/sveltia-cms.js"></script>
+
+    <style>
+      /*
+        Widen the editing area.
+
+        Sveltia hardcodes `max-width: 768px` on form fields with no config
+        option to change it. With the preview pane off (editor.preview: false in
+        config.yml) the editor owns the whole window, so that cap leaves most of
+        a wide screen empty — and raw Markdown with LaTeX and fenced code wraps
+        badly at 768px.
+
+        Scoped to the Content Editor landmark, and both class names here are
+        semantic rather than Sveltia's compiled `svelte-xxxxxxx` hashes. If a
+        future release renames them the fields simply revert to 768px; nothing
+        breaks.
+      */
+      [aria-label='Content Editor'] section.field > * {
+        max-width: min(1200px, 100%) !important;
+      }
+
+      /* Monospace for the raw Markdown body: LaTeX and code are far easier to
+         scan when the glyphs line up. */
+      [aria-label='Content Editor'] .text-area textarea {
+        font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
+          'Liberation Mono', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+    </style>
+  </body>
+</html>

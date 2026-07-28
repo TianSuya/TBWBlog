@@ -1,0 +1,47 @@
+---
+import data from '../data/projects.json';
+import { useTranslations, pick, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const statusLabel = (s: string) =>
+  s === 'active'
+    ? t('status.active')
+    : s === 'paused'
+      ? t('status.paused')
+      : s === 'done'
+        ? t('status.done')
+        : s;
+---
+
+<ul class="plain">
+  {
+    data.projects.map((project) => (
+      <li class="entry">
+        <span class="entry-title">{pick(project.name, lang)}</span>{' '}
+        <span class="badge">{statusLabel(project.status)}</span>{' '}
+        <span class="entry-meta">{project.period}</span>
+        <p class="entry-summary">
+          {pick(project.description, lang)}
+          {project.links.length > 0 && (
+            <>
+              {' '}
+              <span class="brackets">
+                {project.links.map((l) => (
+                  <a href={l.url} rel="noopener">
+                    {l.label}
+                  </a>
+                ))}
+              </span>
+            </>
+          )}
+        </p>
+      </li>
+    ))
+  }
+</ul>

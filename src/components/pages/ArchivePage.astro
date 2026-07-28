@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, groupByYear } from '../../lib/posts';
+import { useTranslations, punct, localizePath, formatDate, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = await getPosts();
+const years = groupByYear(posts);
+---
+
+<Base lang={lang} title={t('archive.title')}>
+  <h1>{t('archive.title')}</h1>
+  <p class="muted">
+    {t('archive.blurb')}{punct[lang].lparen}{posts.length} {t('archive.count')}{punct[lang].rparen}
+  </p>
+
+  {
+    posts.length === 0 ? (
+      <p class="muted">{t('blog.empty')}</p>
+    ) : (
+      years.map(([year, yearPosts]) => (
+        <>
+          <h2 class="section-head">{year}</h2>
+          <ul class="plain">
+            {yearPosts.map((post) => (
+              <li>
+                <span class="entry-meta">{formatDate(post.data.date, lang)}</span>{' '}
+                <a href={localizePath(`/blog/${post.id}`, lang)}>{post.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))
+    )
+  }
+</Base>

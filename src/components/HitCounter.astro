@@ -1,0 +1,55 @@
+---
+import { useTranslations, counterSuffix, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+{/*
+  A real odometer, not a decorative one. The number comes from Umami.
+
+  Umami's API needs a bearer token, which must never reach the browser, so the
+  server writes a plain JSON file every few minutes and Caddy serves it from a
+  directory outside the rsync target (see deploy/update-counter.sh).
+
+  Hidden until the fetch succeeds: a dead counter should leave no empty frame.
+*/}
+<p class="hitcounter" id="hitcounter" hidden>
+  {t('footer.counter')}
+  <span class="digits" id="hitcounter-digits"></span>
+  {counterSuffix[lang]}
+</p>
+
+<script is:inline>
+  (function () {
+    var el = document.getElementById('hitcounter');
+    var digits = document.getElementById('hitcounter-digits');
+    if (!el || !digits) return;
+
+    fetch('/api/counter.json', { cache: 'no-cache' })
+      .then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error(String(r.status)));
+      })
+      .then(function (data) {
+        var n = Number(data && data.pageviews);
+        if (!isFinite(n) || n < 0) return;
+
+        // Six-digit odometer, zero-padded, one boxed glyph per digit.
+        var s = String(Math.floor(n)).padStart(6, '0');
+        for (var i = 0; i < s.length; i++) {
+          var d = document.createElement('span');
+          d.className = 'digit';
+          d.textContent = s[i];
+          digits.appendChild(d);
+        }
+        el.hidden = false;
+      })
+      .catch(function () {
+        /* No counter file yet, or the server is down. Stay hidden. */
+      });
+  })();
+</script>

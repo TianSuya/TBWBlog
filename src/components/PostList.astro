@@ -1,0 +1,33 @@
+---
+import { useTranslations, localizePath, formatDate, type Lang } from '../i18n/ui';
+import type { Post } from '../lib/posts';
+
+interface Props {
+  lang: Lang;
+  posts: Post[];
+  /** Index pages show summaries; the home page just lists titles. */
+  compact?: boolean;
+}
+
+const { lang, posts, compact = false } = Astro.props;
+const t = useTranslations(lang);
+---
+
+{
+  posts.length === 0 ? (
+    <p class="muted">{t('blog.empty')}</p>
+  ) : (
+    <ul class="plain">
+      {posts.map((post) => (
+        <li class="entry">
+          <span class="entry-meta">{formatDate(post.data.date, lang)}</span>{' '}
+          <a class="entry-title" href={localizePath(`/blog/${post.id}`, lang)}>
+            {post.data.title}
+          </a>
+          {post.data.draft && <span class="badge"> {t('blog.draft')}</span>}
+          {!compact && post.data.summary && <p class="entry-summary">{post.data.summary}</p>}
+        </li>
+      ))}
+    </ul>
+  )
+}

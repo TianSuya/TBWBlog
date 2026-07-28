@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "name": { "en": "Attention Sink Atlas", "zh": "注意力汇聚点图谱" },
+      "status": "active",
+      "period": "2026 –",
+      "description": {
+        "en": "Cataloguing where and why attention sinks form across model families, and what breaks when you remove them.",
+        "zh": "系统梳理不同模型家族中注意力汇聚点出现的位置与成因，以及移除它们之后会坏掉什么。"
+      },
+      "links": [
+        { "label": "code", "url": "https://github.com/CHANGEME/atlas" }
+      ]
+    },
+    {
+      "name": { "en": "Long-Horizon Agent Evals", "zh": "长程智能体评测" },
+      "status": "active",
+      "period": "2025 –",
+      "description": {
+        "en": "A harness for evaluating agents on tasks that take hundreds of steps, where per-step accuracy stops being a useful signal.",
+        "zh": "面向数百步长任务的智能体评测框架——在这种尺度上，逐步准确率已经不再是有意义的指标。"
+      },
+      "links": []
+    },
+    {
+      "name": { "en": "KV Cache Compression", "zh": "KV 缓存压缩" },
+      "status": "paused",
+      "period": "2025",
+      "description": {
+        "en": "Exploring what is actually recoverable after aggressive KV cache eviction. Shelved pending better probes.",
+        "zh": "研究激进的 KV 缓存淘汰之后究竟还能恢复出什么。因缺乏更好的探针方法暂时搁置。"
+      },
+      "links": []
+    }
+  ]
+}

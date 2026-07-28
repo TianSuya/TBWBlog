@@ -1,0 +1,48 @@
+---
+import data from '../data/publications.json';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  /** Home page shows only the ones flagged `featured`. */
+  featuredOnly?: boolean;
+}
+
+const { lang, featuredOnly = false } = Astro.props;
+const t = useTranslations(lang);
+
+const items = data.publications
+  .filter((p) => !featuredOnly || p.featured)
+  .sort((a, b) => b.year - a.year);
+---
+
+{
+  items.length === 0 ? (
+    <p class="muted">{t('pub.empty')}</p>
+  ) : (
+    <ol class="biblio">
+      {items.map((pub) => (
+        <li>
+          <span class="pub-title">{pub.title}</span>
+          <br />
+          {pub.authors}
+          <br />
+          <span class="pub-venue">{pub.venue}</span> {pub.year}
+          {pub.note && <> &middot; <span class="badge">{pub.note}</span></>}
+          {pub.links.length > 0 && (
+            <>
+              {' '}
+              <span class="brackets">
+                {pub.links.map((l) => (
+                  <a href={l.url} rel="noopener">
+                    {l.label}
+                  </a>
+                ))}
+              </span>
+            </>
+          )}
+        </li>
+      ))}
+    </ol>
+  )
+}

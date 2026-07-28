@@ -1,0 +1,20 @@
+---
+import { render } from 'astro:content';
+import Post from '../../layouts/Post.astro';
+import { getPosts } from '../../lib/posts';
+
+// Posts are Chinese only, but both shells render every one of them: this is
+// the same article with English navigation around it, and it keeps the
+// [English] | [中文] switcher from pointing at a page that does not exist.
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Post lang="en" post={post}>
+  <Content />
+</Post>

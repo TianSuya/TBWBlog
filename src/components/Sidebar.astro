@@ -1,0 +1,146 @@
+---
+import { getPosts } from '../lib/posts';
+import {
+  useTranslations,
+  alternatePath,
+  localizePath,
+  languages,
+  formatDate,
+  type Lang,
+} from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  url: URL;
+}
+
+const { lang, url } = Astro.props;
+const t = useTranslations(lang);
+
+// Three is enough to signal "this site is alive" without the column growing
+// taller than the content on short pages.
+const recent = (await getPosts()).slice(0, 3);
+
+const nav = [
+  { href: '/', label: t('nav.home') },
+  { href: '/blog', label: t('nav.blog') },
+  { href: '/publications', label: t('nav.publications') },
+  { href: '/archive', label: t('nav.archive') },
+  { href: '/search', label: t('nav.search') },
+  { href: '/sitemap', label: t('nav.sitemap') },
+];
+---
+
+{/*
+  A sectioned navigation column, the way academic homepages were built before
+  everyone agreed on a top nav bar. It also earns back the right-hand whitespace
+  that a 74-character measure leaves on a wide screen.
+
+  In the DOM it sits between the masthead and <main> so that when the grid
+  collapses on narrow screens the nav lands above the content rather than being
+  stranded at the bottom of the page.
+*/}
+<aside class="sidebar" data-pagefind-ignore>
+  <nav aria-label="Main">
+    <h2 class="side-head">{t('side.navigation')}</h2>
+    <ul class="plain">
+      {
+        nav.map((item) => (
+          <li>
+            <a href={localizePath(item.href, lang)}>{item.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    recent.length > 0 && (
+      <>
+        <h2 class="side-head optional">{t('side.recent')}</h2>
+        <ul class="plain side-recent">
+          {recent.map((post) => (
+            <li>
+              <span class="entry-meta">{formatDate(post.data.date, lang)}</span>
+              <br />
+              <a href={localizePath(`/blog/${post.id}`, lang)}>{post.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      </>
+    )
+  }
+
+  {/*
+    Grouped so the mobile layout can flatten these three one-line sections into
+    a single row, rather than spending four headings' worth of vertical space
+    before the reader reaches any content.
+  */}
+  <div class="side-meta">
+    <div class="side-meta-group">
+      <h2 class="side-head">{t('side.language')}</h2>
+      <p class="brackets">
+        {
+          (Object.keys(languages) as Lang[]).map((code) =>
+            code === lang ? (
+              <span class="current-lang">[{languages[code]}]</span>
+            ) : (
+              <a href={alternatePath(url, code)} hreflang={code}>
+                {languages[code]}
+              </a>
+            )
+          )
+        }
+      </p>
+    </div>
+
+    <div class="side-meta-group">
+      <h2 class="side-head">{t('side.display')}</h2>
+      <p class="brackets">
+        <a
+          href="#"
+          id="theme-toggle"
+          role="button"
+          aria-label={t('theme.toggle')}
+          data-light={t('theme.light')}
+          data-dark={t('theme.dark')}>{t('theme.dark')}</a
+        >
+      </p>
+    </div>
+
+    <div class="side-meta-group">
+      <h2 class="side-head">{t('side.syndication')}</h2>
+      <p class="brackets">
+        <a href="/rss.xml">{t('footer.rss')}</a>
+      </p>
+    </div>
+  </div>
+</aside>
+
+<script is:inline>
+  (function () {
+    var toggle = document.getElementById('theme-toggle');
+    if (!toggle) return;
+
+    var LIGHT = toggle.getAttribute('data-light') || 'Light';
+    var DARK = toggle.getAttribute('data-dark') || 'Dark';
+
+    // The label advertises what clicking will do, not the current state.
+    function sync() {
+      toggle.textContent = document.documentElement.classList.contains('dark') ? LIGHT : DARK;
+    }
+
+    sync();
+
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      var isDark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      } catch (err) {
+        /* private browsing: the toggle still works for this page load */
+      }
+      sync();
+    });
+  })();
+</script>

@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+import PublicationList from '../PublicationList.astro';
+import { useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} title={t('pub.title')}>
+  <h1>{t('pub.title')}</h1>
+  <PublicationList lang={lang} />
+</Base>

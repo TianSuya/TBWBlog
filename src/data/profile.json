@@ -1,0 +1,56 @@
+{
+  "name": {
+    "en": "Bowen Tian",
+    "zh": "田博闻"
+  },
+  "title": {
+    "en": "PhD Student, Large Language Models",
+    "zh": "博士研究生，大语言模型方向"
+  },
+  "affiliation": {
+    "en": "Your University",
+    "zh": "你的学校"
+  },
+  "email": "you@example.com",
+  "avatar": "/images/avatar.jpg",
+  "bio": {
+    "en": "I study how large language models represent and manipulate knowledge internally, with a focus on mechanistic interpretability and long-context reasoning. Before this I worked on ____ at ____.\n\nI am always happy to talk about research. The fastest way to reach me is email.",
+    "zh": "我研究大语言模型内部如何表征和操作知识，重点关注机制可解释性与长上下文推理。在此之前我在 ____ 做 ____ 方向的工作。\n\n欢迎交流研究问题，邮件是最快的联系方式。"
+  },
+  "interests": [
+    {
+      "en": "Mechanistic interpretability",
+      "zh": "机制可解释性"
+    },
+    {
+      "en": "Long-context reasoning",
+      "zh": "长上下文推理"
+    },
+    {
+      "en": "Efficient inference and serving",
+      "zh": "高效推理与服务"
+    },
+    {
+      "en": "Evaluation of agentic systems",
+      "zh": "智能体系统的评测"
+    }
+  ],
+  "links": [
+    {
+      "label": "Email",
+      "url": "mailto:you@example.com"
+    },
+    {
+      "label": "Google Scholar",
+      "url": "https://scholar.google.com/citations?user=CHANGEME"
+    },
+    {
+      "label": "GitHub",
+      "url": "https://github.com/CHANGEME"
+    },
+    {
+      "label": "arXiv",
+      "url": "https://arxiv.org/a/CHANGEME"
+    }
+  ]
+}

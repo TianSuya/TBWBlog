@@ -1,0 +1,247 @@
+# Sveltia CMS configuration
+#
+# Every field in the `blog` collection must stay in lockstep with the Zod schema
+# in src/content.config.ts. If they drift, the CMS will happily write a post
+# that fails the next build.
+#
+# ---------------------------------------------------------------------------
+# `repo` must match your actual GitHub repository, or the CMS cannot commit.
+# ---------------------------------------------------------------------------
+
+backend:
+  name: github
+  repo: TianSuya/TBWBlog
+  branch: main
+  # No `base_url` on purpose. Without an OAuth proxy Sveltia offers
+  # "Sign in with Token", which takes a GitHub personal access token (repo
+  # scope) and stores it in this browser's local storage. That is the only
+  # currently-working method that needs no server. See deploy/README.md.
+
+# Chinese post titles would otherwise produce empty or percent-encoded
+# filenames, so the author supplies an explicit slug instead (see below).
+slug:
+  encoding: unicode
+  clean_accents: true
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+publish_mode: simple
+
+# Turn the preview pane off site-wide.
+#
+# Sveltia renders the preview with `marked`, which knows nothing about LaTeX,
+# Shiki syntax highlighting or this site's typography — so the pane showed
+# something that disagreed with what actually ships. A preview that lies is
+# worse than no preview, and dropping it hands the full window width to the
+# editor. Resolution order in Sveltia is: index file -> file collection ->
+# collection -> this global setting -> default true.
+editor:
+  preview: false
+
+collections:
+  # ------------------------------------------------------------------ posts
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    folder: src/content/blog
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{fields.slug}}'
+    preview_path: 'blog/{{fields.slug}}'
+    summary: '{{date | date("YYYY-MM-DD")}} · {{title}}'
+    sortable_fields: [date, title]
+    view_filters:
+      - { label: Drafts, field: draft, pattern: true }
+    fields:
+      - { name: title, label: Title, widget: string, required: true }
+
+      - name: slug
+        label: URL slug
+        widget: string
+        required: true
+        pattern:
+          ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Lowercase letters, digits and hyphens only']
+        hint: >-
+          Becomes the filename and the URL. Use ASCII even for Chinese posts —
+          /zh/blog/long-context-evals reads better than a percent-encoded title.
+
+      # No Language field: posts are Chinese only. The site chrome stays
+      # bilingual, but an article is one article — it shows up in both the
+      # English and the Chinese blog index, not as a translated pair.
+
+      - name: date
+        label: Date
+        widget: datetime
+        required: true
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        format: 'YYYY-MM-DD'
+        picker_utc: true
+
+      - name: updated
+        label: Updated
+        widget: datetime
+        required: false
+        date_format: 'YYYY-MM-DD'
+        time_format: false
+        format: 'YYYY-MM-DD'
+        picker_utc: true
+
+      - name: summary
+        label: Summary
+        widget: text
+        required: false
+        hint: Shown on the blog index and used as the meta description.
+
+      - { name: tags, label: Tags, widget: list, required: false, default: [] }
+
+      - name: draft
+        label: Draft
+        widget: boolean
+        required: false
+        default: false
+        hint: Drafts are visible in `pnpm dev` and excluded from the built site.
+
+      - name: body
+        label: Body
+        widget: markdown
+        required: true
+        # Raw Markdown source, no rich-text mode.
+        #
+        # The first entry in `modes` is the default, and Sveltia only renders
+        # the mode-toggle button when more than one is listed — so a single
+        # value pins the editor to plain source with no way to slip back into
+        # rich text and silently reflow hand-written Markdown.
+        modes: [raw]
+        hint: >-
+          Raw Markdown. LaTeX ($inline$, $$display$$) and fenced code blocks are
+          rendered at build time, not here — check them with `pnpm dev`.
+
+  # ------------------------------------------------------- home page content
+  - name: site
+    label: Site Content
+    files:
+      - name: profile
+        label: Profile / Home Page
+        file: src/data/profile.json
+        format: json
+        fields:
+          - name: name
+            label: Name
+            widget: object
+            fields:
+              - { name: en, label: English, widget: string }
+              - { name: zh, label: 中文, widget: string }
+          - name: title
+            label: Title / Position
+            widget: object
+            fields:
+              - { name: en, label: English, widget: string }
+              - { name: zh, label: 中文, widget: string }
+          - name: affiliation
+            label: Affiliation
+            widget: object
+            fields:
+              - { name: en, label: English, widget: string }
+              - { name: zh, label: 中文, widget: string }
+          - { name: email, label: Email, widget: string }
+          - name: avatar
+            label: Avatar
+            widget: image
+            hint: >-
+              Files under public/ are served exactly as uploaded — Astro does
+              not resize them. Crop to a square and keep it under ~50KB, or run
+              `pnpm avatar <path>` locally on the full-size original.
+          - name: bio
+            label: Biography
+            widget: object
+            hint: Blank lines become separate paragraphs.
+            fields:
+              - { name: en, label: English, widget: text }
+              - { name: zh, label: 中文, widget: text }
+          - name: interests
+            label: Research Interests
+            widget: list
+            fields:
+              - { name: en, label: English, widget: string }
+              - { name: zh, label: 中文, widget: string }
+          - name: links
+            label: Links
+            widget: list
+            summary: '{{fields.label}}'
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: url, label: URL, widget: string }
+
+      - name: projects
+        label: Current Projects
+        file: src/data/projects.json
+        format: json
+        fields:
+          - name: projects
+            label: Projects
+            widget: list
+            summary: '{{fields.name.en}}'
+            fields:
+              - name: name
+                label: Name
+                widget: object
+                fields:
+                  - { name: en, label: English, widget: string }
+                  - { name: zh, label: 中文, widget: string }
+              - name: status
+                label: Status
+                widget: select
+                default: active
+                options:
+                  - { label: Active, value: active }
+                  - { label: Paused, value: paused }
+                  - { label: Completed, value: done }
+              - { name: period, label: Period, widget: string, hint: 'e.g. 2026 –' }
+              - name: description
+                label: Description
+                widget: object
+                fields:
+                  - { name: en, label: English, widget: text }
+                  - { name: zh, label: 中文, widget: text }
+              - name: links
+                label: Links
+                widget: list
+                required: false
+                default: []
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: url, label: URL, widget: string }
+
+      - name: publications
+        label: Publications
+        file: src/data/publications.json
+        format: json
+        fields:
+          - name: publications
+            label: Publications
+            widget: list
+            summary: '{{fields.year}} · {{fields.title}}'
+            fields:
+              - { name: title, label: Title, widget: string }
+              - { name: authors, label: Authors, widget: string }
+              - { name: venue, label: Venue, widget: string }
+              - { name: year, label: Year, widget: number, value_type: int }
+              - name: featured
+                label: Show on home page
+                widget: boolean
+                default: false
+              - { name: note, label: Note, widget: string, required: false, default: '' }
+              - name: links
+                label: Links
+                widget: list
+                required: false
+                default: []
+                summary: '{{fields.label}}'
+                fields:
+                  - { name: label, label: Label, widget: string }
+                  - { name: url, label: URL, widget: string }

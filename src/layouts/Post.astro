@@ -1,0 +1,70 @@
+---
+// KaTeX's stylesheet lives here rather than in Base so the home page and the
+// index pages stay at zero font requests. Browsers only download a web font
+// when a glyph in it is actually rendered, so posts without math pay for the
+// ~23KB of CSS and nothing else.
+import 'katex/dist/katex.min.css';
+
+import Base from './Base.astro';
+import { useTranslations, punct, localizePath, formatDate, type Lang } from '../i18n/ui';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  lang: Lang;
+  post: CollectionEntry<'blog'>;
+}
+
+const { lang, post } = Astro.props;
+const t = useTranslations(lang);
+const { title, date, updated, tags, summary, draft } = post.data;
+---
+
+<Base lang={lang} title={title} description={summary}>
+  {/*
+    Pagefind indexes only what is inside data-pagefind-body, which keeps the
+    nav, masthead and footer signature out of every search result.
+
+    It has to sit on the <article>, not on .post-body: Pagefind takes a result's
+    title from the first <h1> inside the indexed region, and with the heading
+    outside it every result was titled with the site name instead of the post's.
+    data-pagefind-meta pins it explicitly rather than relying on that fallback.
+
+    Only the Chinese shell is indexed. Every post exists at both /blog/<slug>
+    and /zh/blog/<slug>, so indexing both would file each article twice — once
+    into the `en` index, where its Chinese text gets no word segmentation and is
+    effectively unsearchable. Indexing just this copy leaves a single `zh-cn`
+    index; Pagefind's own fallback (exact language -> base language -> the index
+    with the most pages) then serves the English /search page from it, so both
+    search pages find every post.
+  */}
+  <article data-pagefind-body={lang === 'zh' ? true : undefined}>
+    <h1 data-pagefind-meta="title">
+      {title}{draft && <span class="badge"> {t('blog.draft')}</span>}
+    </h1>
+
+    <p class="entry-meta" data-pagefind-ignore>
+      {t('blog.posted')}{punct[lang].colon}{formatDate(date, lang)}
+      {updated && (
+        <> &middot; {t('blog.updated')}{punct[lang].colon}{formatDate(updated, lang)}</>
+      )}
+    </p>
+
+    <div class="post-body">
+      <slot />
+    </div>
+
+    {
+      tags.length > 0 && (
+        <p class="entry-meta" data-pagefind-ignore>
+          {t('blog.tags')}{punct[lang].colon}{tags.join(punct[lang].comma)}
+        </p>
+      )
+    }
+  </article>
+
+  <hr />
+
+  <p class="brackets">
+    <a href={localizePath('/blog', lang)}>{t('blog.backToList')}</a>
+  </p>
+</Base>

@@ -1,0 +1,38 @@
+---
+import HitCounter from './HitCounter.astro';
+import { useTranslations, punct, localizePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Baked at build time. On a static site this is genuinely the last update.
+const built = new Date().toISOString().slice(0, 10);
+
+const validatorUrl = `https://validator.w3.org/nu/?doc=${encodeURIComponent(
+  new URL(Astro.url.pathname, Astro.site ?? 'https://example.com').href
+)}`;
+---
+
+{/* No <hr> here: .sitefooter already carries a border-top, and having both
+    drew two stacked rules above the footer. */}
+<footer class="sitefooter">
+  <HitCounter lang={lang} />
+
+  {/* Explicit {' '} throughout: Astro collapses the whitespace between an
+      expression and a following element, which would jam the middots against
+      the link text. */}
+  <p class="signature">
+    {t('footer.bestViewed')} &middot; {t('footer.madeWith')} &middot;{' '}
+    <a href={validatorUrl} rel="nofollow noopener" target="_blank">{t('footer.validate')}</a>
+  </p>
+
+  <p>
+    {t('footer.lastUpdated')}{punct[lang].colon}{built} &middot;{' '}
+    <a href={localizePath('/sitemap', lang)}>{t('nav.sitemap')}</a> &middot;{' '}
+    <a href="/rss.xml">{t('footer.rss')}</a>
+  </p>
+</footer>

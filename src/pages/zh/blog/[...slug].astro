@@ -1,0 +1,20 @@
+---
+import { render } from 'astro:content';
+import Post from '../../../layouts/Post.astro';
+import { getPosts } from '../../../lib/posts';
+
+// The canonical home for an article: the content is Chinese, so this shell is
+// the one Pagefind indexes (see Post.astro). /blog/<slug> renders the same post
+// with English chrome.
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Post lang="zh" post={post}>
+  <Content />
+</Post>

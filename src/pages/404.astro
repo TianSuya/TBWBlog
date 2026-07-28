@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { useTranslations, localizePath } from '../i18n/ui';
+
+// A single 404 for the whole site — Caddy serves one file and cannot know which
+// language the visitor wanted. English, with a link to both home pages.
+const t = useTranslations('en');
+---
+
+<Base lang="en" title={t('notfound.title')}>
+  <h1>{t('notfound.title')}</h1>
+  <p>{t('notfound.blurb')}</p>
+  <p class="brackets">
+    <a href={localizePath('/', 'en')}>{t('notfound.home')}</a>
+    <a href={localizePath('/', 'zh')}>返回首页</a>
+    <a href={localizePath('/sitemap', 'en')}>{t('nav.sitemap')}</a>
+  </p>
+</Base>
