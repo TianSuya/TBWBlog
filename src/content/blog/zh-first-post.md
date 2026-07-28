@@ -7,8 +7,6 @@ summary: ''
 draft: false
 ---
 
-# PPO算法详细推导
-
 ### 基本的模型组成
 
 - Policy Model
