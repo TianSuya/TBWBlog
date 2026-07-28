@@ -1,5 +1,4 @@
 ---
-import HitCounter from './HitCounter.astro';
 import { useTranslations, punct, localizePath, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -20,8 +19,6 @@ const validatorUrl = `https://validator.w3.org/nu/?doc=${encodeURIComponent(
 {/* No <hr> here: .sitefooter already carries a border-top, and having both
     drew two stacked rules above the footer. */}
 <footer class="sitefooter">
-  <HitCounter lang={lang} />
-
   {/* Explicit {' '} throughout: Astro collapses the whitespace between an
       expression and a following element, which would jam the middots against
       the link text. */}

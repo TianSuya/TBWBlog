@@ -1,8 +1,8 @@
 // Browser smoke test for the client-side features.
 //
-// Everything else is verifiable from the build output, but search, the theme
-// toggle and the hit counter only exist once JavaScript runs. This drives a
-// real browser against a real server so those three are actually exercised.
+// Everything else is verifiable from the build output, but search and the theme
+// toggle only exist once JavaScript runs. This drives a real browser against a
+// real server so those features are actually exercised.
 //
 // Usage:  pnpm build && caddy run ... && node scripts/smoke.mjs [baseURL]
 
@@ -26,17 +26,9 @@ const consoleErrors = [];
 page.on('console', (m) => m.type() === 'error' && consoleErrors.push(m.text()));
 page.on('pageerror', (e) => consoleErrors.push(String(e)));
 
-// --------------------------------------------------------------- hit counter
-console.log('\nHit counter');
-await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
-const counterVisible = await page.locator('#hitcounter').isVisible();
-check('counter becomes visible after fetch', counterVisible);
-const digits = await page.locator('#hitcounter .digit').allTextContents();
-check('renders a 6-digit odometer', digits.length === 6, digits.join(''));
-check('shows the value from counter.json (127)', digits.join('') === '000127');
-
 // ---------------------------------------------------------------- dark theme
 console.log('\nTheme toggle');
+await page.goto(`${BASE}/`, { waitUntil: 'networkidle' });
 const startDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
 await page.click('#theme-toggle');
 const afterDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));

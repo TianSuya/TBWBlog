@@ -27,11 +27,6 @@ const desc = description ?? pick(profile.bio, lang).split('\n')[0];
 
 const canonical = new URL(url.pathname, Astro.site ?? 'https://example.com');
 
-// Analytics is opt-in via env vars so the repo never carries a site ID, and so
-// `pnpm dev` is never counted. Set these in the GitHub Actions build step.
-const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
-const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
-const trackingOn = import.meta.env.PROD && umamiSrc && umamiId;
 ---
 
 <!doctype html>
@@ -75,8 +70,6 @@ const trackingOn = import.meta.env.PROD && umamiSrc && umamiId;
         }
       })();
     </script>
-
-    {trackingOn && <script is:inline defer src={umamiSrc} data-website-id={umamiId} />}
   </head>
 
   <body>

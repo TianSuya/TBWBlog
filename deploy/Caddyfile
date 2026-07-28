@@ -1,11 +1,11 @@
-# Caddy configuration for the site + analytics.
+# Caddy configuration for the blog.
 #
 # Caddy obtains and renews TLS certificates automatically; there is no certbot
 # and no renewal cron job. Open ports 80 and 443 and point DNS here before you
 # reload, or the ACME challenge will fail.
 #
 # ---------------------------------------------------------------------------
-# Domain: tianbowen.net (main site, www redirect, stats subdomain).
+# Domain: tianbowen.net (main site and www redirect).
 # Validate before reloading:  caddy validate --config /etc/caddy/Caddyfile
 # ---------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ tianbowen.net {
 	# Content-hashed filenames never change meaning, so cache them forever.
 	# Everything else must revalidate, or a deploy takes an hour to show up.
 	@immutable path /assets/* /pagefind/*
-	@revalidate not path /assets/* /pagefind/* /api/*
+	@revalidate not path /assets/* /pagefind/*
 
 	header @immutable Cache-Control "public, max-age=31536000, immutable"
 	header @revalidate Cache-Control "public, max-age=0, must-revalidate"
@@ -30,23 +30,6 @@ tianbowen.net {
 		X-Frame-Options "SAMEORIGIN"
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		-Server
-	}
-
-	# --- visitor counter ----------------------------------------------------
-	# Served from a DIFFERENT directory than the site, deliberately.
-	#
-	# GitHub Actions deploys with `rsync --delete`, which removes anything under
-	# /var/www/blog that the build did not produce. This file is written by a
-	# cron job on this machine (see update-counter.sh), so it must live outside
-	# the rsync target or every deploy would delete it.
-	handle /api/counter.json {
-		root * /var/www/counter
-		# `handle` does not strip the matched prefix, so without this rewrite
-		# file_server would look for /var/www/counter/api/counter.json.
-		rewrite * /counter.json
-		header Cache-Control "public, max-age=60"
-		header Content-Type "application/json"
-		file_server
 	}
 
 	# --- the site itself ----------------------------------------------------
@@ -73,21 +56,8 @@ tianbowen.net {
 }
 
 # ------------------------------------------------------- canonical host redirect
-# One canonical hostname keeps analytics and search engines from splitting the
+# One canonical hostname keeps search engines from splitting the
 # site in two. This sends www -> apex; swap the two if you prefer www.
 www.tianbowen.net {
 	redir https://tianbowen.net{uri} permanent
-}
-
-# -------------------------------------------------------------- analytics UI
-stats.tianbowen.net {
-	# Umami binds to 127.0.0.1 only (see docker-compose.yml), so this reverse
-	# proxy is the only route in and TLS is never bypassed.
-	reverse_proxy 127.0.0.1:3000
-
-	header {
-		X-Content-Type-Options "nosniff"
-		Strict-Transport-Security "max-age=31536000; includeSubDomains"
-		-Server
-	}
 }

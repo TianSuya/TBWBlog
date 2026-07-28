@@ -62,7 +62,6 @@ export const ui = {
     'theme.light': 'Light',
     'theme.dark': 'Dark',
 
-    'footer.counter': 'You are visitor number',
     'footer.bestViewed': 'Best viewed in Netscape Navigator 4.0 at 800×600',
     'footer.madeWith': 'Made with Notepad',
     'footer.validate': 'Valid HTML5',
@@ -133,7 +132,6 @@ export const ui = {
     'theme.light': '亮色',
     'theme.dark': '深色',
 
-    'footer.counter': '你是第',
     'footer.bestViewed': '建议使用 Netscape Navigator 4.0 于 800×600 分辨率浏览',
     'footer.madeWith': '用记事本制作',
     'footer.validate': '通过 HTML5 验证',

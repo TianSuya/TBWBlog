@@ -605,31 +605,6 @@ mark {
   margin: 0.35em 0;
 }
 
-/* The hit counter: mechanical odometer digits, one boxed glyph each. */
-.hitcounter {
-  font-family: var(--font-mono);
-}
-
-.hitcounter .digits {
-  display: inline-block;
-  margin-left: 0.2em;
-}
-
-.hitcounter .digit {
-  display: inline-block;
-  border: 1px solid var(--box-border);
-  background: var(--box-bg);
-  color: var(--fg);
-  padding: 0 0.22em;
-  margin-right: 1px;
-  font-weight: bold;
-}
-
-/* Hidden until the fetch succeeds, so a dead counter leaves no empty frame. */
-.hitcounter[hidden] {
-  display: none;
-}
-
 .signature {
   font-family: var(--font-mono);
   font-size: 0.95em;

@@ -31,12 +31,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build site and search index
-        env:
-          # Set these two as repository variables (Settings → Secrets and
-          # variables → Actions → Variables). Without them the tracking script
-          # is simply omitted and the site still builds.
-          PUBLIC_UMAMI_SRC: ${{ vars.PUBLIC_UMAMI_SRC }}
-          PUBLIC_UMAMI_ID: ${{ vars.PUBLIC_UMAMI_ID }}
         run: pnpm build
 
       - name: Check Web 1.0 constraints
@@ -61,7 +55,3 @@ jobs:
             --exclude='.well-known/' \
             -e "ssh -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
             dist/ "$TARGET"
-
-      # The hit counter is written by the server, not by this job, and lives in
-      # /var/www/counter/ — outside the rsync target above. If you ever move it
-      # under /var/www/blog/, `--delete` will remove it on every deploy.
