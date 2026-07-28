@@ -38,19 +38,15 @@
   "links": [
     {
       "label": "Email",
-      "url": "mailto:you@example.com"
+      "url": "mailto:btian989@connect.hkust-gz.edu.cn"
     },
     {
       "label": "Google Scholar",
-      "url": "https://scholar.google.com/citations?user=CHANGEME"
+      "url": "https://scholar.google.com/citations?user=SwhX3JkAAAAJ"
     },
     {
       "label": "GitHub",
-      "url": "https://github.com/CHANGEME"
-    },
-    {
-      "label": "arXiv",
-      "url": "https://arxiv.org/a/CHANGEME"
+      "url": "https://github.com/TianSuya"
     }
   ]
 }
