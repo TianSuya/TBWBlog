@@ -4,14 +4,14 @@
     "zh": "田博闻"
   },
   "title": {
-    "en": "PhD Student, Large Language Models",
-    "zh": "博士研究生，大语言模型方向"
+    "en": "PhD Student",
+    "zh": "博士研究生"
   },
   "affiliation": {
-    "en": "Your University",
-    "zh": "你的学校"
+    "en": "The Hong Kong University of Science and Technology (Guangzhou)",
+    "zh": "香港科技大学（广州）"
   },
-  "email": "you@example.com",
+  "email": "btian989@connect.hkust-gz.edu.cn",
   "avatar": "/images/avatar.jpg",
   "bio": {
     "en": "I study how large language models represent and manipulate knowledge internally, with a focus on mechanistic interpretability and long-context reasoning. Before this I worked on ____ at ____.\n\nI am always happy to talk about research. The fastest way to reach me is email.",
