@@ -14,25 +14,25 @@
   "email": "btian989@connect.hkust-gz.edu.cn",
   "avatar": "/images/avatar.jpg",
   "bio": {
-    "en": "I study how large language models represent and manipulate knowledge internally, with a focus on mechanistic interpretability and long-context reasoning. Before this I worked on ____ at ____.\n\nI am always happy to talk about research. The fastest way to reach me is email.",
-    "zh": "我研究大语言模型内部如何表征和操作知识，重点关注机制可解释性与长上下文推理。在此之前我在 ____ 做 ____ 方向的工作。\n\n欢迎交流研究问题，邮件是最快的联系方式。"
+    "en": "My research focuses on reducing intelligent models’ dependence on human-generated data. Weakly supervised learning provided the initial point of departure: how can effective learning signals be derived from limited annotations? As this research progressed, the question extended from the data space to the weight space. Through model merging, multi-task fusion, weight generation, and model editing, my work explores how to reuse, combine, and update the knowledge and capabilities already encoded in models. This trajectory has naturally expanded toward large language models and foundation models.\n\nThis line of research further points toward reinforcement learning-based paradigms for autonomous learning. Through exploration, interaction, and feedback, models can generate learning signals beyond existing human corpora and annotations, gradually shifting from imitating established knowledge to acquiring and creating knowledge autonomously. This may offer a promising path toward artificial general intelligence.\n\nIf you are interested in my current research or technical blog, please feel free to contact me by email.",
+    "zh": "我的研究聚焦于降低智能模型对人工数据的依赖。弱监督学习提供了最初的切入点：如何利用有限标注获得有效的学习信号。随着研究深入，这一问题从数据层面延伸至权重空间，通过权重融合、多任务融合、权重生成与模型编辑，复用、组合并更新模型已有的知识与能力，也由此自然拓展到大语言模型与基础模型。\n这一研究脉络进一步指向以强化学习为基础的自主学习范式：通过探索、交互与反馈，让模型产生超越人类语料和标注的新学习信号，逐步从模仿既有知识转向自主获取与创造知识，为通用人工智能的发展探索可行路径。\n如果你对我当前的研究方向或技术博客感兴趣，期待你随时与我邮件联系。"
   },
   "interests": [
     {
-      "en": "Mechanistic interpretability",
-      "zh": "机制可解释性"
+      "en": "Reinforcement Learning for Autonomous Intelligence",
+      "zh": "面向自主智能的强化学习"
     },
     {
-      "en": "Long-context reasoning",
-      "zh": "长上下文推理"
+      "en": "Weight Generation and Model Editing",
+      "zh": "权重生成与模型编辑"
     },
     {
-      "en": "Efficient inference and serving",
-      "zh": "高效推理与服务"
+      "en": "Weight-Space Learning and Model Fusion",
+      "zh": "权重空间学习与模型融合"
     },
     {
-      "en": "Evaluation of agentic systems",
-      "zh": "智能体系统的评测"
+      "en": "Data-Efficient and Weakly Supervised Learning",
+      "zh": "数据高效学习与弱监督学习"
     }
   ],
   "links": [
