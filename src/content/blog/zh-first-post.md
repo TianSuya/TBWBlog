@@ -1,5 +1,5 @@
 ---
-title: PPO算法详细推导
+title: 如何将 Reward Model 得到的标量奖励转化为策略梯度
 slug: ppo
 date: 2026-07-28
 updated: 2026-07-28
