@@ -59,9 +59,9 @@ $$
 
 ### GAE 训练方法
 
-GAE类似于从蒙特卡洛和 TD Error 中找到的折中点，其中我们常说的 TD Error 一般是 TD(0) ，也就是观察一步做差，如果观察两步则可以计算出 TD(1)：
+GAE 类似于从蒙特卡洛和 TD Error 中找到的折中点，其中我们常说的 TD Error 一般是 TD(0) ，也就是观察一步做差，如果观察两步则可以计算出 TD(1)：
 $$
-\hat{G}_t = r_t + \gamma r_{t+1} + \gamma^2 V_\bar{\phi}(s_{t+2})
+\hat{G}_t = r_t + \gamma r_{t+1} + \gamma^2 V_\bar{\phi} (s_{t+2})
 $$
 这样可以总结出我们如果观察 $n$ 步来计算的话，可以归纳为：
 $$
